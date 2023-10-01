@@ -4,7 +4,8 @@
 	height: 800px;
 }
 
-#score {
+#score,
+#goal {
 	position: fixed;
 	top: 20px;
 	left: 875px;
@@ -13,6 +14,11 @@
 	padding: 50px;
 	border: 5px ridge black;
 	border-top: none;
+}
+
+#goal {
+	display: none;
+	left: calc(875px + 400px)
 }
 
 .score-h3 {

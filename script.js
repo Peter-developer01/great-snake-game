@@ -1,9 +1,17 @@
+(function() {
 const canvas = document.querySelector("canvas#game");
 
 const scoreCounter = document.querySelector("#score-count");
 
 const canvasWidth = parseInt(getComputedStyle(canvas).width);
 const canvasHeight = parseInt(getComputedStyle(canvas).height);
+
+const shadow = document.querySelector("#goal").attachShadow({"mode": "closed"});
+
+let style = document.createElement("style");
+style.innerHTML = "#reached { display: none; }";
+
+shadow.append(style);
 
 let possiblePositions = [];
 let currentPosition = "0,0";
@@ -110,6 +118,8 @@ function updateSnake(newPosition, action) {
 	currentPosition = coords.box(updatedPosition);
 }
 
+let rgb = [0, 0, 0];
+
 function update() {
 	updateSnake(currentPosition, currentAction);
 	let pos = coords.unbox(currentPosition);
@@ -122,6 +132,29 @@ function update() {
 		currentFoodPosition = [...possiblePositions[Math.ceil(Math.random() * possiblePositions.length)].split(",")];
 		currentFoodPosition[0] = +currentFoodPosition[0];
 		currentFoodPosition[1] = +currentFoodPosition[1];
+
+		if (rgb[2] < 100) {
+			rgb[2]++;
+		} else {
+			if (rgb[1] < 100) {
+				rgb[1]++;
+			} else {
+				if (rgb[0] < 100) {
+					rgb[0]++;
+				} else {
+					alert("Congratulations!!! You've successfully made it 10K! You now can share it on GitHub!")
+					let divToAppend = document.createElement("div");
+					divToAppend.innerHTML = '<h1 id="reached">Goal Reached!</h1><h4><a href="https://github.com/Peter-developer01/great-snake-game/discussions/1">Share it on GitHub!</a></h4><span>*Include screenshot too</span>';
+					shadow.append(divToAppend);
+					shadow.querySelector("style").remove();
+					let style = "span { font-size: 11px; }";
+					document.querySelector("#goal").style.display = "block";
+				}
+			}
+		}
+
+		ctx.fillStyle = "rgb( " + rgb.join(", ") + ")";
+
 
 		drawFood();
 	}
@@ -171,7 +204,7 @@ document.addEventListener("keydown", (event) => {
 
 	if (!notArrows) update();
 });
-
+})();
 
 
 
